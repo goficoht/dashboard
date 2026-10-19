@@ -1,3 +1,4 @@
+/*
 {% extends "base.html" %}
 
 {% block title %}Dashboard - GOFICO{% endblock %}
@@ -67,7 +68,7 @@
     </section>
 
   <!-- Existing Content -->
-  <section id="existing" class="admin-panel">
+  <!-- <section id="existing" class="admin-panel">
     <div class="panel-heading">
       <h2>Content Library</h2>
       <p>Published materials currently visible on the platform.</p>
@@ -76,22 +77,83 @@
       {% for item in content %}
       {% if item.published %}
       <div class="content-item">
-        <div class="content-wrapper {% if loop.index is odd %} image-left{%else %} image-right {% endif%}">
-      {% if item.image_url %}
-        <img src="{{ url_for('static', filename=item.image_url) }}" alt="Image" style="max-width:400px; border-radius:10px;">
-        {% endif %}
-        <div class="content-text">
-        <h3 class="content-title">{{ item.title }}</h3>
-               <div class="content-body">{{ item.body|safe }}</div>
-               </div>
-               </div>
+        <!<div class="content-wrapper {% if loop.index is odd %} image-left{%else %} image-right {% endif%}"> -->
+          <!-- <div class="content-text">
+        
+            <h3 class="content-title">{{ item.title }}</h3>
+            <div class="content-section">
+                <strong>Section:</strong> {{ item.section }}
+            </div>
+
+            <div class="content-section">
+                <a href="/documents/{{ item.section }}/{{ item.filename }}"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                    {{ item.filename }}
+                </a>
+            </div>
+           </div> -->
+        <!-- </div>
       </div>
       {% endif %}
       {% endfor %}
     </div>
-  </section>
+  </section> --> 
+  <section id="existing" class="admin-panel">
 
-  <!-- Add New Content -->
+    <div class="panel-heading">
+        <h2>Content Library</h2>
+    </div>
+
+    <div class="section-group">
+        <h3>📁 Politique Publique</h3>
+
+        {% for item in content %}
+            {% if item.section == "politique-publique" and item.published %}
+
+            <div class="content-item">
+                <div class="content-title">
+                    {{ item.title }}
+                </div>
+                <div class="content-section">
+                  <a href="/documents/{{ item.section }}/{{ item.filename }}"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                      {{ item.filename }}
+                  </a>
+                </div>
+            </div>
+
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="section-group">
+        <h3>📁 Législation</h3>
+
+        {% for item in content %}
+            {% if item.section == "legislation" and item.published %}
+
+            <div class="content-item">
+                <div class="content-title">
+                    {{ item.title }}
+                </div>
+
+              <div class="content-section">
+                <a href="/documents/{{ item.section }}/{{ item.filename }}"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                    {{ item.filename }}
+                </a>
+              </div>
+            </div>
+
+            {% endif %}
+        {% endfor %}
+    </div>
+
+  </section>
+  <!-- Add New Content
   <section id="add" class="admin-panel">
     <div class="panel-heading">
       <h2>Create Content</h2>
@@ -104,7 +166,69 @@
       <button type="submit">Save Draft</button>
     </form>
 
-  </section>
+  </section> -->
+  <!-- Add New Content -->
+<!-- <section id="add"> -->
+<section id="add" class="admin-panel">
+  <div class="pannel-heading">
+    <h2>Add New Content</h2>
+  </div>
+  <div class="content-card">
+      <form
+          action="/admin/add_content"
+
+          method="POST"
+          enctype="multipart/form-data"
+      >
+
+          <input
+              type="text"
+              name="title"
+              placeholder="Enter title"
+              required
+          >
+
+          <br><br>
+
+          <select name="section" required>
+              <option value="">Select section</option>
+              <option value="politique-publique">
+                  Politique publique
+              </option>
+              <option value="legislation">
+                  Législation
+              </option>
+          </select>
+
+          <br><br>
+
+          <input
+              type="file"
+              name="pdf"
+              accept=".pdf,application/pdf"
+              required
+          >
+
+          <br><br>
+
+          <label>
+              <input
+                  type="checkbox"
+                  name="published"
+                  value="true"
+              >
+              Publish immediately
+          </label>
+
+          <br><br>
+
+          <button type="submit">
+              Add Content
+          </button>
+
+    </form>
+  </div>
+</section>
 
   <!-- Preview & Post -->
   <section id="preview" class="admin-panel">
@@ -115,15 +239,47 @@
 
     {% for item in content %}
     <div class="content-item" data-id="{{ item.id }}">
-
+      <!-- <h3 class="content-title">{{ item.title }}</h3>
+      <div class="content-section" > 
+        Section: {{ item.section}}
+      </div>
+      <a href="documents/{{ item.section }}/{{ item.filename }}" target="_blank">
+        {{ item.title }}>
+      </a> -->
       <h3 class="content-title">{{ item.title }}</h3>
-      
-      <div class="content-body" contenteditable="true">{{ item.body|safe }}</div>
 
+      <div class="content-section">
+          <strong>Section:</strong> {{ item.section }}
+      </div>
+
+      <div class="content-section">
+          <a href="/documents/{{ item.section }}/{{ item.filename }}"
+            target="_blank"
+            rel="noopener noreferrer">
+              {{ item.filename }}
+          </a>
+      </div>
+<!-- 
 {% if item.image_url %}
   <img src="{{ url_for('static', filename=item.image_url) }}" alt="Image" style="max-width:300px; border-radius:10px; margin-top:10px;">
-{% endif %}
+{% endif %} -->
+<!-- {% if item.filename %}
+  <a href="documents/{{ item.section }}/{{ item.filename }}">
+      Open PDF
+  </a>
+{% endif %} -->
+<!-- {% if item.filename %}
+<div class="content-section">
+    <strong>File:</strong> {{ item.filename }}
+</div>
 
+<div class="content-section">
+    <strong>URL:</strong>
+    <a href="/documents/{{ item.section }}/{{ item.filename }}"
+       target="_blank"
+       rel="noopener noreferrer">
+</div>
+{% endif %} -->
 
       <p>Status: <strong>{{ "Published" if item.published else "Unpublished" }}</strong></p>
       <button class="modify-btn">Modify</button>
@@ -140,34 +296,30 @@
 </main>
 </div>
 
-<!-- JS for Edit, Save, Delete, Publish -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   
   // --- Preview & Post Logic (Corrected Modify/Save Workflow) ---
   const previewItems = document.querySelectorAll("#preview .content-item");
+ 
 
   previewItems.forEach(item => {
     const id = item.dataset.id;
-    const contentBody = item.querySelector(".content-body");
     const modifyBtn = item.querySelector(".modify-btn");
     const saveBtn = item.querySelector(".save-btn");
     const deleteBtn = item.querySelector(".delete-btn");
     const publishBtn = item.querySelector(".publish-btn");
+    const section = item.querySelector(".content-section");
 
-    contentBody.setAttribute("contenteditable", "false"); 
 
     // 2. "Modify" Click Handler: Enables editing and swaps buttons
     modifyBtn.onclick = () => {
-      contentBody.setAttribute("contenteditable", "true");
-      contentBody.focus();
       modifyBtn.style.display = 'none'; // Hide Modify
       saveBtn.style.display = 'inline-block'; // Show Save
     };
 
     // 3. "Save Changes" Click Handler: Saves via AJAX and reverts state
     saveBtn.onclick = () => {
-      const newBody = contentBody.innerHTML;
       const currentTitleElement = item.querySelector(".content-title");
       
       const newTitle = prompt("Enter new title:", currentTitleElement.textContent);
@@ -175,13 +327,15 @@ document.addEventListener("DOMContentLoaded", function () {
       if (newTitle !== null && newTitle.trim() !== "") {
         currentTitleElement.textContent = newTitle;
 
-        fetch(`/edit_content/${id}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `title=${encodeURIComponent(newTitle)}&body=${encodeURIComponent(newBody)}`
+        fetch(`/admin/edit_content/${id}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: 
+        `title=${encodeURIComponent(newTitle)}&section=${encodeURIComponent(section.textContent)}`
         }).then(() => {
           // Revert back to view state after successful save
-          contentBody.setAttribute("contenteditable", "false");
           modifyBtn.style.display = 'inline-block';
           saveBtn.style.display = 'none';
           location.reload(); 
@@ -194,24 +348,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // 4. Delete & Publish/Re-Publish Handlers
     deleteBtn.onclick = () => {
       if (confirm("Are you sure you want to delete this content?")) {
-        fetch(`/delete_content/${id}`, { method: "POST" }).then(() => location.reload());
+        fetch(`/admin/delete_content/${id}`, { method: "POST" }).then(() => location.reload());
       }
     };
 
     publishBtn.onclick = () => {
-      fetch(`/publish_content/${id}`, { method: "POST" }).then(() => location.reload());
+      fetch(`/admin/publish_content/${id}`, { method: "POST" }).then(() => location.reload());
     };
   });
 
   // --- Navigation Logic (Your Navigation code is fine, but included here for completeness) ---
-  const links = document.querySelectorAll(".side-nav-link");
+  const links = document.querySelectorAll("nav a");
   const sections = document.querySelectorAll(".admin-panel");
 
   sections.forEach(sec => sec.classList.remove("active"));
   document.getElementById("existing").classList.add("active");
 
   links.forEach(link => link.classList.remove("active-link"));
-  document.querySelector(".side-nav-link[data-target='existing']").classList.add("active-link");
+  document.querySelector("nav a[data-target='existing']").classList.add("active-link");
 
   links.forEach(link => {
     link.addEventListener("click", e => {
@@ -229,3 +383,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 {% endblock %}
+
+
+<!-- <h3 class="content-title">{{ item.title }}</h3>
+               <div class="content-section">{{ item.filename}}</div>
+               </div> -->

@@ -794,3 +794,76 @@ body {
         max-width: 100%;
     }
 }
+.content-card {
+    background: #fff;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+#add form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#add input[type="text"],
+#add select,
+#add input[type="file"] {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #d9dde6;
+    border-radius: 12px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#add button {
+    width: 220px;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: #13294b;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.section-group {
+    margin-bottom: 35px;
+}
+
+.section-group h3 {
+    color: #16284d;
+    border-bottom: 2px solid #d9dde6;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.content-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+.content-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.pdf-link {
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+.pdf-link:hover {
+    text-decoration: underline;
+}
